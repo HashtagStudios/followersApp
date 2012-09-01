@@ -58,7 +58,7 @@
              }
              else {
                  // Inspect the contents of jsonError
-                 NSLog(@"%@", jsonError);
+                 NSLog(@"ERORR: %@", jsonError);
              }
          }
      }];
@@ -67,24 +67,26 @@
 - (void)requestBiosWithUsers:(NSArray *)timeline {
     
     NSString *timelineString = @"";
-    for (int i = 0; i < 90; i++) {
+    for (int i = 0; i < 99; i++) {
         timelineString = [NSString stringWithFormat:@"%@,%@", timelineString, [timeline objectAtIndex:i]];
     }
     
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setObject:timelineString forKey:@"screen_name"];
+//    [params setObject:timelineString forKey:@"screen_name"];
 //    [params setObject:@"5" forKey:@"count"];
+
     [params setObject:@"true" forKey:@"include_entities"];
+    [params setObject:timelineString forKey:@"user_id"];
 //    [params setObject:@"1" forKey:@"include_rts"];
     
     //  Next, we create an URL that points to the target endpoint
     NSURL *url =
-    [NSURL URLWithString:@"https://api.twitter.com/1/users/lookup.json"];
+    [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1/users/lookup.json"]];
     
     //  Now we can create our request.  Note that we are performing a GET request.
     TWRequest *request = [[TWRequest alloc] initWithURL:url
                                              parameters:params
-                                          requestMethod:TWRequestMethodGET];
+                                          requestMethod:TWRequestMethodPOST];
     
     //  Perform our request
     [request performRequestWithHandler:
@@ -100,7 +102,7 @@
              
              if (timeline) {
                  // We have an object that we can parse
-                 NSLog(@"%@", timeline);
+                 NSLog(@"%i", [timeline count]);
              }
              else {
                  // Inspect the contents of jsonError
